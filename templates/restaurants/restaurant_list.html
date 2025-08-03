@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Restaurants{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">All Restaurants</h1>
+    <div class="row">
+        {% for restaurant in restaurants %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="bg-light" style="height: 200px;"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ restaurant.name }}</h5>
+                        <p class="card-text">{{ restaurant.description|truncatewords:15 }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No restaurants found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

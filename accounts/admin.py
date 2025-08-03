@@ -4,9 +4,23 @@ from .models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (
-        ('Additional Info', {'fields': ('is_owner', 'strike_count', 'is_restricted')}),
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Permissions', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        }),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Additional Info', {'fields': ('is_owner', 'company_number', 'strike_count', 'is_restricted')}),
     )
-    list_display = ('username', 'email', 'is_owner', 'strike_count', 'is_restricted', 'is_staff')
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', 'is_owner', 'company_number'),
+        }),
+    )
+
+    list_display = ('email', 'is_owner', 'company_number', 'strike_count', 'is_restricted', 'is_staff')
     list_filter = ('is_owner', 'is_restricted', 'is_staff')
-    search_fields = ('username', 'email')
+    search_fields = ('email',)
+    ordering = ('email',)

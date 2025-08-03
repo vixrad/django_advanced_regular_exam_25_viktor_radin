@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-coj%7a(4!97y&mh46itolkkr$3=on%(au-#!5_=bms0u)=@4y3'
+SECRET_KEY = config('SECRET_KEY', default = 'django-insecure-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default = False, cast = bool)
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +38,7 @@ PROJECT_APPS = [
     'restaurants.apps.RestaurantsConfig',
     'reservations.apps.ReservationsConfig',
     'menu.apps.MenuConfig',
+    'widget_tweaks',
 ]
 
 INSTALLED_APPS = [
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'restaurant_saas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,24 +93,24 @@ WSGI_APPLICATION = 'restaurant_saas.wsgi.application'
 #     }
 # }
 
-USE_POSTGRES = config('USE_POSTGRES', default=False, cast=bool)
+USE_POSTGRES = config('USE_POSTGRES', default = False, cast = bool)
 
 if USE_POSTGRES:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default='restaurant_saas_db'),
-            'USER': config('DB_USER', default='saas_user'),
-            'PASSWORD': config('DB_PASSWORD', default='saas_password'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
+            'NAME': config('DB_NAME', default = 'restaurant_saas_db'),
+            'USER': config('DB_USER', default = 'saas_user'),
+            'PASSWORD': config('DB_PASSWORD', default = 'saas_password'),
+            'HOST': config('DB_HOST', default = 'localhost'),
+            'PORT': config('DB_PORT', default = 5432, cast = int),
         }
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
@@ -146,8 +147,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+COMPANIES_HOUSE_API_KEY = config('COMPANIES_HOUSE_API_KEY', default = 'your-dev-key-here')

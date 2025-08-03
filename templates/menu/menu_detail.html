@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Sample Menu{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Sample Menu</h1>
+    <p class="lead">
+        This is a placeholder menu for restaurant ID: {{ view.kwargs.restaurant_id }}.
+    </p>
+    <p>You can customize this page later to show dynamic menu data.</p>
+    <a href="{% url 'restaurant_list' %}" class="btn btn-outline-primary">Back to Restaurants</a>
+</div>
+{% endblock %}

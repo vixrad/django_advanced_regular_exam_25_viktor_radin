@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">My Orders</h1>
+    {% if object_list %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Restaurant</th>
+                    <th>Status</th>
+                    <th>Delivery Time</th>
+                    <th>Created At</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in object_list %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.restaurant.name }}</td>
+                        <td>{{ order.get_status_display }}</td>
+                        <td>{{ order.delivery_time|date:"M d, Y H:i" }}</td>
+                        <td>{{ order.created_at|date:"M d, Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                            <a href="{% url 'order_update' order.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a href="{% url 'order_delete' order.id %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You don't have any orders yet.</p>
+        <a href="{% url 'restaurant_list' %}" class="btn btn-primary">Find Restaurants</a>
+    {% endif %}
+</div>
+{% endblock %}

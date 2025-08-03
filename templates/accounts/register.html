@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="card mx-auto shadow-sm" style="max-width: 500px;">
+    <div class="card-body">
+        <h2 class="card-title mb-4 text-center">Create an Account</h2>
+
+        <!-- Toggle Switch -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="btn-group" role="group" aria-label="Register Toggle">
+                <input type="radio" class="btn-check" name="register-type" id="user-toggle" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="user-toggle">User</label>
+
+                <input type="radio" class="btn-check" name="register-type" id="owner-toggle" autocomplete="off">
+                <label class="btn btn-outline-primary" for="owner-toggle">Restaurant Owner</label>
+            </div>
+        </div>
+
+        <form method="post" id="register-form">
+            {% csrf_token %}
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    Email <span class="text-danger">*</span>
+                </label>
+                {{ form.email|add_class:"form-control" }}
+            </div>
+
+            <!-- Company Number -->
+            <div class="mb-3" id="company-number-field" style="display: none;">
+                <label for="{{ form.company_number.id_for_label }}" class="form-label">
+                    Company Number <span class="text-danger">*</span>
+                </label>
+                {{ form.company_number|add_class:"form-control" }}
+
+                <!-- Company Name (auto-filled) -->
+                <label class="form-label mt-3">Company Name</label>
+                <input
+                    type="text"
+                    id="company-name-field"
+                    class="form-control bg-light text-muted"
+                    placeholder="Will be filled once company number is added"
+                    readonly
+                >
+
+                <!-- Registered Address (auto-filled) -->
+                <label class="form-label mt-3">Registered Address</label>
+                <input
+                    type="text"
+                    id="company-address-field"
+                    class="form-control bg-light text-muted"
+                    placeholder="Will be filled once company number is added"
+                    readonly
+                >
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">
+                    Password <span class="text-danger">*</span>
+                </label>
+                {{ form.password1|add_class:"form-control" }}
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">
+                    Confirm Password <span class="text-danger">*</span>
+                </label>
+                {{ form.password2|add_class:"form-control" }}
+            </div>
+
+            <!-- Hidden is_owner field -->
+            <input type="hidden" name="is_owner" id="id_is_owner" value="False">
+
+            <button class="btn btn-success w-100 mt-3" type="submit">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

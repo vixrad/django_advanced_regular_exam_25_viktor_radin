@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ object.id }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Order #{{ object.id }}</h1>
+    <p><strong>Restaurant:</strong> {{ object.restaurant.name }}</p>
+    <p><strong>Status:</strong> {{ object.get_status_display }}</p>
+    <p><strong>Delivery Time:</strong> {{ object.delivery_time|date:"M d, Y H:i" }}</p>
+    <p><strong>Notes:</strong> {{ object.notes|default:"None" }}</p>
+    <p><strong>Address:</strong> {{ object.delivery_address }}</p>
+
+    <h3 class="mt-4">Items</h3>
+    <ul class="list-group mb-4">
+        {% for item in object.items.all %}
+            <li class="list-group-item d-flex justify-content-between">
+                <span>{{ item.menu_item.name }} (x{{ item.quantity }})</span>
+                <span>{{ item.menu_item.price|floatformat:2 }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'order_update' object.id %}" class="btn btn-outline-secondary">Edit</a>
+    <a href="{% url 'order_delete' object.id %}" class="btn btn-outline-danger">Cancel</a>
+    <a href="{% url 'order_list' %}" class="btn btn-link">Back to My Orders</a>
+</div>
+{% endblock %}

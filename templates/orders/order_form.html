@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{% if object %}Update Order{% else %}Place New Order{% endif %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">{% if object %}Update Order{% else %}Place a New Order{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% if object %}Save Changes{% else %}Place Order{% endif %}</button>
+        <a href="{% url 'order_list' %}" class="btn btn-link">Cancel</a>
+    </form>
+</div>
+{% endblock %}

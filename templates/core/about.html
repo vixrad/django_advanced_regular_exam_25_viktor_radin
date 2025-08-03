@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}About VIKODINE{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">About VIKODINE</h1>
+    <p class="lead">
+        VIKODINE is a UK-based platform that connects food lovers with the best restaurants.
+        We help customers find new dining experiences and enable restaurant owners to
+        showcase their venues and menus.
+    </p>
+
+    <h2 class="mt-5">For Customers</h2>
+    <p>
+        Browse restaurants by location, check real-time menus, and make informed dining decisions.
+        Whether you’re looking for fine dining, casual spots, or local gems, VIKODINE has you covered.
+    </p>
+
+    <h2 class="mt-5">For Restaurant Owners</h2>
+    <p>
+        Create your restaurant profile, manage your menu online, and attract new customers.
+        We provide the tools you need to promote your brand and grow your business.
+    </p>
+
+    <a href="{% url 'contact' %}" class="btn btn-primary mt-4">Get in Touch</a>
+</div>
+{% endblock %}
