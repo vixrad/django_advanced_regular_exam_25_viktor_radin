@@ -19,9 +19,13 @@
                 </p>
 
                 <h3 class="section-heading text-black">📍 Address</h3>
-                <p class="mb-3 text-muted">
-                    {{ restaurant.street_name }} {{ restaurant.street_number }},
-                    {{ restaurant.city }} {{ restaurant.postal_code }}
+                <p class="mb-3">
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ restaurant.street_name|urlencode }}+{{ restaurant.street_number|urlencode }}+{{ restaurant.city|urlencode }}+{{ restaurant.postal_code|urlencode }}"
+                       target="_blank"
+                       class="address-link">
+                        {{ restaurant.street_name }} {{ restaurant.street_number }},
+                        {{ restaurant.city }} {{ restaurant.postal_code }}
+                    </a>
                 </p>
 
                 <h3 class="section-heading text-black">📞 Phone</h3>
@@ -34,16 +38,29 @@
                     {% for day in restaurant.opening_hours.all %}
                         <li>
                             <strong class="text-black">{{ day.get_day_of_week_display }}</strong><br>
-                            {% if day.is_closed %}Closed{% else %}{{ day.open_time|time:"g:i A" }} – {{ day.close_time|time:"g:i A" }}{% endif %}
+                            {% if day.is_closed %}
+                                Closed
+                            {% else %}
+                                {{ day.open_time|time:"g:i A" }} – {{ day.close_time|time:"g:i A" }}
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
 
                 <div class="mt-auto d-flex flex-column gap-2">
                     <a href="{% url 'menu_detail' restaurant.id %}" class="btn btn-primary">View Menu</a>
-                    <a href="{% url 'reservation_create_with_restaurant' restaurant.id %}" class="btn btn-success">
-                        Book a Table
-                    </a>
+
+                    {% if user.is_authenticated and user.is_owner and not user.is_superuser %}
+                        <!-- Owners cannot book -->
+                        <button class="btn btn-success" disabled title="Restaurant owners cannot book tables">
+                            Book a Table
+                        </button>
+                    {% else %}
+                        <!-- Normal users, superusers, and logged-out users -->
+                        <a href="{% url 'reservation_create_with_restaurant' restaurant.id %}" class="btn btn-success">
+                            Book a Table
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

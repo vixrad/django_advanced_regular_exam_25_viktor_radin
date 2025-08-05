@@ -267,14 +267,14 @@ footer {
     color: var(--primary);
 }
 
-/* phone link */
-.phone-link {
-    color: var(--primary-dark);
+/* phone and email link */
+a.phone-link, a.address-link {
+    color: var(--primary-dark) !important;
     font-weight: 500;
     text-decoration: none;
 }
-.phone-link:hover {
-    text-decoration: underline;
+a.phone-link:hover, a.address-link:hover {
+    text-decoration: underline !important;
 }
 
 /* opening hours list */

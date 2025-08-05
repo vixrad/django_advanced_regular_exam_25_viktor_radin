@@ -3,11 +3,32 @@
 {% load crispy_forms_tags %}
 {% block title %}New Reservation{% endblock %}
 {% block content %}
-<div class="container py-4" style="max-width: 600px;">
+<div class="container py-4" style="max-width: 650px;">
     <h2 class="mb-3 fw-bold text-center">Book a Table</h2>
     <p class="text-muted text-center small mb-4">
-        Select a date and time based on the restaurant's opening hours.
+        Select a future date and time based on the restaurant's opening hours.
     </p>
+
+    {% if restaurant %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold">Opening Hours</div>
+        <div class="card-body">
+            <ul class="list-unstyled mb-0">
+                {% for day in restaurant.opening_hours.all %}
+                    <li>
+                        <strong>{{ day.get_day_of_week_display }}:</strong>
+                        {% if day.is_closed %}
+                            <span class="text-danger">Closed</span>
+                        {% else %}
+                            {{ day.open_time|time:"g:i A" }} – {{ day.close_time|time:"g:i A" }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
     <form method="post" id="reservation-form" class="border rounded p-3 shadow-sm bg-white">
         {% csrf_token %}
         <div class="mb-3">
@@ -31,6 +52,6 @@
     </form>
 </div>
 
-<!-- Include custom JS -->
+<!-- External JS -->
 <script src="{% static 'js/reservation.js' %}"></script>
 {% endblock %}

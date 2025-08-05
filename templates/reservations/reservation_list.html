@@ -15,11 +15,7 @@
                     <a href="?sort=restaurant__name&direction={% if current_sort == 'restaurant__name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
                         Restaurant
                         {% if current_sort == 'restaurant__name' %}
-                            {% if current_direction == 'asc' %}
-                                ▲
-                            {% else %}
-                                ▼
-                            {% endif %}
+                            {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
                         {% endif %}
                     </a>
                 </th>
@@ -27,11 +23,7 @@
                     <a href="?sort=reservation_time&direction={% if current_sort == 'reservation_time' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
                         Date & Time
                         {% if current_sort == 'reservation_time' %}
-                            {% if current_direction == 'asc' %}
-                                ▲
-                            {% else %}
-                                ▼
-                            {% endif %}
+                            {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
                         {% endif %}
                     </a>
                 </th>
@@ -39,11 +31,7 @@
                     <a href="?sort=number_of_people&direction={% if current_sort == 'number_of_people' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
                         Guests
                         {% if current_sort == 'number_of_people' %}
-                            {% if current_direction == 'asc' %}
-                                ▲
-                            {% else %}
-                                ▼
-                            {% endif %}
+                            {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
                         {% endif %}
                     </a>
                 </th>
@@ -51,15 +39,11 @@
                     <a href="?sort=status&direction={% if current_sort == 'status' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
                         Status
                         {% if current_sort == 'status' %}
-                            {% if current_direction == 'asc' %}
-                                ▲
-                            {% else %}
-                                ▼
-                            {% endif %}
+                            {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
                         {% endif %}
                     </a>
                 </th>
-                <th></th>
+                <th class="text-end">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -68,9 +52,17 @@
                 <td>{{ reservation.restaurant.name }}</td>
                 <td>{{ reservation.reservation_time|date:"D, d M Y H:i" }}</td>
                 <td>{{ reservation.number_of_people }}</td>
-                <td><span class="badge bg-secondary text-capitalize">{{ reservation.status }}</span></td>
                 <td>
+                    <span class="badge bg-secondary text-capitalize">{{ reservation.status }}</span>
+                </td>
+                <td class="text-end">
                     <a href="{% url 'reservation_detail' reservation.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                    {% if reservation.status != 'cancelled' and reservation.status != 'completed' %}
+                    <form method="post" action="{% url 'cancel_reservation' reservation.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                    </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -80,7 +72,9 @@
 {% else %}
 <div class="text-center mt-5">
     <p class="text-muted">You have no reservations yet.</p>
-    <a href="{% url 'reservation_create' %}" class="btn btn-primary mt-3">Make a Reservation</a>
+    {% if user.is_authenticated and not user.is_owner %}
+        <a href="{% url 'reservation_create' %}" class="btn btn-primary mt-3">Make a Reservation</a>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

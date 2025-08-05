@@ -26,7 +26,8 @@ SECRET_KEY = config('SECRET_KEY', default = 'django-insecure-change-me')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default = False, cast = bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.onrender.com', 'localhost']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -45,6 +46,7 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,3 +169,28 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "noreply@example.com"
+
+JAZZMIN_SETTINGS = {
+    "site_title": "VIKODINE Admin",
+    "site_header": "VIKODINE",
+    "site_brand": "Admin Dashboard",
+    "welcome_sign": "Welcome to VIKODINE Admin",
+    "search_model": ["accounts.User", "restaurants.Restaurant"],
+
+    # Top Menu
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Restaurants", "url": "/restaurants/", "new_window": True},
+    ],
+
+    # Icons
+    "icons": {
+        "accounts.User": "fas fa-user",
+        "restaurants.Restaurant": "fas fa-store",
+        "reservations.Reservation": "fas fa-calendar-check",
+    },
+
+    "show_ui_builder": False,
+}
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')

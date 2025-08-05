@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>/', views.ReservationDetailView.as_view(), name='reservation_detail'),
     path('<int:pk>/review/', views.leave_review, name='leave_review'),
     path('api/restaurants/<int:restaurant_id>/timeslots/', views.available_timeslots, name='available_timeslots'),
+    path('cancel/<int:pk>/', views.cancel_reservation, name='cancel_reservation'),
 ]

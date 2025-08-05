@@ -1,0 +1,1 @@
+web: gunicorn restaurant_saas.wsgi:application
