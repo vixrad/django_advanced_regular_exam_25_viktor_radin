@@ -1,26 +1,63 @@
 {% extends 'base.html' %}
 {% block title %}About VIKODINE{% endblock %}
 {% block content %}
+
+<!-- About section -->
 <div class="container py-5">
-    <h1 class="mb-4">About VIKODINE</h1>
+    <h1 class="mb-4 fw-bold">About VIKODINE</h1>
     <p class="lead">
-        VIKODINE is a UK-based platform that connects food lovers with the best restaurants.
-        We help customers find new dining experiences and enable restaurant owners to
-        showcase their venues and menus.
+        VIKODINE is a London‑based platform built to make dining out simple and enjoyable.
+        We connect people who love food with authentic, verified restaurants,
+        helping diners discover great places to eat while giving restaurants the tools to grow.
     </p>
 
-    <h2 class="mt-5">For Customers</h2>
+    <!-- Our mission -->
+    <h2 class="mt-5 fw-bold">Our mission</h2>
     <p>
-        Browse restaurants by location, check real-time menus, and make informed dining decisions.
-        Whether you’re looking for fine dining, casual spots, or local gems, VIKODINE has you covered.
+        Eating out in London should be exciting, not stressful. Our mission is to make
+        finding and booking trusted restaurants effortless, while supporting local
+        restaurant owners in reaching more guests and managing their bookings with ease.
     </p>
 
-    <h2 class="mt-5">For Restaurant Owners</h2>
+    <!-- For customers -->
+    <h2 class="mt-5 fw-bold">For food lovers</h2>
     <p>
-        Create your restaurant profile, manage your menu online, and attract new customers.
-        We provide the tools you need to promote your brand and grow your business.
+        Discover hidden gems and local favourites with confidence.
+        Browse real‑time menus, read genuine reviews, and book your table in seconds – all from one place.
+        Whether it’s a special night out, a quick lunch spot, or somewhere new to try,
+        VIKODINE helps you make the right choice.
     </p>
 
-    <a href="{% url 'contact' %}" class="btn btn-primary mt-4">Get in Touch</a>
+    <!-- For restaurant owners -->
+    <h2 class="mt-5 fw-bold">For restaurant owners</h2>
+    <p>
+        Get listed on VIKODINE and showcase your food to people actively looking to dine out in London.
+        Keep your menu up to date, manage bookings easily, and gain insights into what your guests want.
+        We help you fill tables and grow your reputation without extra hassle.
+    </p>
+
+    <!-- Why trust us -->
+    <h2 class="mt-5 fw-bold">Why trust VIKODINE?</h2>
+    <p>
+        Every restaurant on our platform is verified to ensure authentic, quality dining experiences.
+        We focus on connecting genuine restaurants with people who value great food and great service.
+        Our simple tools and clear information save you time and give you confidence in every booking.
+    </p>
+
+    <a href="{% url 'contact' %}" class="btn btn-primary mt-4">Get in touch</a>
 </div>
+
+<!-- Call to action -->
+<section class="cta-section text-white text-center py-5">
+    <div class="container">
+        <h2 class="mb-3 fw-bold">Be part of VIKODINE today</h2>
+        <p class="mb-4 fs-5">
+            Whether you want to discover your next dining experience in London or grow your restaurant’s reach,
+            VIKODINE makes it simple to connect with the right people.
+        </p>
+        <a href="/restaurants/" class="btn btn-light btn-lg me-2">Explore restaurants</a>
+        <a href="/about-us/" class="btn btn-outline-light btn-lg">List my restaurant</a>
+    </div>
+</section>
+
 {% endblock %}

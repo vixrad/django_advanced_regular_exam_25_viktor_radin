@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Reservation Details{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 fw-bold">Reservation Details</h2>
+    <div class="card shadow-sm p-4">
+        <p><strong>Restaurant:</strong> {{ reservation.restaurant.name }}</p>
+        <p><strong>Date & Time:</strong> {{ reservation.reservation_time|date:"D, d M Y H:i" }}</p>
+        <p><strong>People:</strong> {{ reservation.number_of_people }}</p>
+        <p><strong>Status:</strong> {{ reservation.get_status_display }}</p>
+    </div>
+    {% if reservation.status == 'completed' and not reservation.review %}
+        <a href="{% url 'leave_review' reservation.pk %}" class="btn btn-success mt-3">Leave Review</a>
+    {% endif %}
+    <a href="{% url 'my_reservations' %}" class="btn btn-outline-secondary mt-3">Back to My Reservations</a>
+</div>
+{% endblock %}

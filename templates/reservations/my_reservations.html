@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}My Reservations{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 fw-bold">My Reservations</h2>
+
+    {% if reservations %}
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Restaurant</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Guests</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.restaurant.name }}</td>
+                    <td>{{ reservation.reservation_time|date:"D, M d, Y g:i A" }}</td>
+                    <td>{{ reservation.number_of_people }}</td>
+                    <td>
+                        {% if reservation.status == 'confirmed' %}
+                            <span class="badge bg-success">Confirmed</span>
+                        {% elif reservation.status == 'completed' %}
+                            <span class="badge bg-primary">Completed</span>
+                        {% elif reservation.status == 'cancelled' %}
+                            <span class="badge bg-danger">Cancelled</span>
+                        {% elif reservation.status == 'no_show' %}
+                            <span class="badge bg-warning text-dark">No Show</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'reservation_detail' reservation.pk %}" class="btn btn-sm btn-outline-primary">
+                            View
+                        </a>
+                        {% if reservation.status == 'completed' and not reservation.review %}
+                            <a href="{% url 'leave_review' reservation.pk %}" class="btn btn-sm btn-outline-success ms-2">
+                                Leave Review
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-muted">You have no reservations yet. <a href="{% url 'restaurant_list' %}">Book your first table</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

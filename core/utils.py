@@ -1,16 +1,16 @@
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
-def generate_available_time_slots(open_time, close_time):
+def generate_available_time_slots(open_time: time, close_time: time):
     """
-    Generates time slots at 30-minute intervals
-    starting 30 min after open until 30 min before close.
+    Generate 30-minute interval slots between open_time and close_time.
+    Example: 10:00 → 10:30 → 11:00 ...
     """
     slots = []
-    start_dt = datetime.combine(datetime.today(), open_time) + timedelta(minutes=30)
-    end_dt = datetime.combine(datetime.today(), close_time) - timedelta(minutes=30)
+    current_time = datetime.combine(datetime.today(), open_time)
+    end_time = datetime.combine(datetime.today(), close_time)
 
-    while start_dt <= end_dt:
-        slots.append(start_dt.time())
-        start_dt += timedelta(minutes=30)
+    while current_time < end_time:
+        slots.append(current_time.time())
+        current_time += timedelta(minutes=30)
 
     return slots

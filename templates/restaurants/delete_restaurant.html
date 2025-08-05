@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5 text-center">
+    <h2 class="mb-4">Delete <span class="fw-bold">{{ restaurant.name }}</span>?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-lg px-4">Yes, Delete</button>
+        <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-lg px-4">Cancel</a>
+    </form>
+</div>
+{% endblock %}

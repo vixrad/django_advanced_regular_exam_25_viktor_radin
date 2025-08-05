@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container py-4">
+    <h1 class="fw-bold mb-4">Edit Menu Item – {{ item.name }}</h1>
+    <form method="post" enctype="multipart/form-data" class="card shadow-sm p-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+            {% render_field form.name class="form-control" %}
+            {{ form.name.errors }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Description</label>
+            {% render_field form.description class="form-control" %}
+            {{ form.description.errors }}
+        </div>
+        {% if item.image %}
+            <div class="mb-3">
+                <p class="fw-semibold">Current Image:</p>
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="img-fluid rounded shadow-sm mb-2" style="max-width:300px;">
+            </div>
+        {% endif %}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Image</label>
+            {% render_field form.image class="form-control" %}
+            {{ form.image.errors }}
+            <small class="text-muted">{{ form.image.help_text }}</small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Price (£) <span class="text-danger">*</span></label>
+            {% render_field form.price class="form-control" %}
+            {{ form.price.errors }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Allergens</label>
+            {% render_field form.allergens class="form-control" %}
+            {{ form.allergens.errors }}
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Calories</label>
+                {% render_field form.calories class="form-control" %}
+                {{ form.calories.errors }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Protein (g)</label>
+                {% render_field form.protein class="form-control" %}
+                {{ form.protein.errors }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Carbs (g)</label>
+                {% render_field form.carbs class="form-control" %}
+                {{ form.carbs.errors }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Fat (g)</label>
+                {% render_field form.fat class="form-control" %}
+                {{ form.fat.errors }}
+            </div>
+            <div class="col-md-4 mb-3 d-flex align-items-center">
+                <div class="form-check">
+                    {% render_field form.available class="form-check-input" %}
+                    <label class="form-check-label">Available</label>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary btn-lg px-4">Save Changes</button>
+            <a href="{% url 'menu_detail' item.category.restaurant.id %}" class="btn btn-outline-secondary btn-lg px-4">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

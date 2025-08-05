@@ -4,50 +4,67 @@ document.addEventListener("DOMContentLoaded", function () {
     const companyField = document.getElementById("company-number-field");
     const isOwnerInput = document.getElementById("id_is_owner");
     const companyNumberInput = document.getElementById("id_company_number");
-
     const companyNameField = document.getElementById("company-name-field");
     const companyAddressField = document.getElementById("company-address-field");
 
-    function updateForm() {
-        if (ownerToggle.checked) {
-            companyField.style.display = "block";
-            isOwnerInput.value = "True";
-        } else {
-            companyField.style.display = "none";
-            isOwnerInput.value = "False";
+    const API_BASE = "/accounts/api/companies/";
+    const INVALID_MESSAGE = "Add a valid company number";
+    const DEFAULT_MESSAGE = "Automatically populated";
 
-            // Clear company info
+    function showOwnerFields(show) {
+        companyField.style.display = show ? "block" : "none";
+        if (!show) {
             companyNameField.value = "";
             companyAddressField.value = "";
         }
     }
 
     async function fetchCompanyDetails(companyNumber) {
-        if (!companyNumber) return;
+        if (!companyNumber || !/^[A-Za-z0-9]+$/.test(companyNumber)) {
+            companyNameField.value = INVALID_MESSAGE;
+            companyAddressField.value = INVALID_MESSAGE;
+            return;
+        }
+
+        companyNameField.value = "Loading...";
+        companyAddressField.value = "Loading...";
 
         try {
-            const response = await fetch(`/accounts/api/companies/${companyNumber}/`);
+            const response = await fetch(`${API_BASE}${companyNumber}/`);
             const data = await response.json();
 
-            if (response.ok) {
-                companyNameField.value = data.company_name || "";
-                companyAddressField.value = data.registered_office_address || "";
+            if (response.ok && data.company_name) {
+                companyNameField.value = data.company_name;
+                companyAddressField.value = data.registered_office_address || INVALID_MESSAGE;
             } else {
-                companyNameField.value = "Not found";
-                companyAddressField.value = "";
+                companyNameField.value = INVALID_MESSAGE;
+                companyAddressField.value = INVALID_MESSAGE;
             }
         } catch (error) {
-            console.error("Error fetching company details:", error);
+            companyNameField.value = INVALID_MESSAGE;
+            companyAddressField.value = INVALID_MESSAGE;
         }
     }
 
     companyNumberInput?.addEventListener("blur", function () {
         const companyNumber = this.value.trim();
-        if (companyNumber) fetchCompanyDetails(companyNumber);
+        fetchCompanyDetails(companyNumber);
     });
 
-    ownerToggle.addEventListener("change", updateForm);
-    userToggle.addEventListener("change", updateForm);
+    ownerToggle.addEventListener("change", function () {
+        isOwnerInput.value = "True";
+        showOwnerFields(true);
+        companyNameField.value = DEFAULT_MESSAGE;
+        companyAddressField.value = DEFAULT_MESSAGE;
+    });
 
-    updateForm();
+    userToggle.addEventListener("change", function () {
+        isOwnerInput.value = "False";
+        showOwnerFields(false);
+    });
+
+    // Default state
+    companyNameField.value = DEFAULT_MESSAGE;
+    companyAddressField.value = DEFAULT_MESSAGE;
+    showOwnerFields(false);
 });

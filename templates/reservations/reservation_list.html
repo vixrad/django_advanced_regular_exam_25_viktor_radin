@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Reservations{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 fw-bold text-center">My Reservations</h1>
+
+{% if reservations %}
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>
+                    <a href="?sort=restaurant__name&direction={% if current_sort == 'restaurant__name' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                        Restaurant
+                        {% if current_sort == 'restaurant__name' %}
+                            {% if current_direction == 'asc' %}
+                                ▲
+                            {% else %}
+                                ▼
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort=reservation_time&direction={% if current_sort == 'reservation_time' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                        Date & Time
+                        {% if current_sort == 'reservation_time' %}
+                            {% if current_direction == 'asc' %}
+                                ▲
+                            {% else %}
+                                ▼
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort=number_of_people&direction={% if current_sort == 'number_of_people' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                        Guests
+                        {% if current_sort == 'number_of_people' %}
+                            {% if current_direction == 'asc' %}
+                                ▲
+                            {% else %}
+                                ▼
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th>
+                    <a href="?sort=status&direction={% if current_sort == 'status' and current_direction == 'asc' %}desc{% else %}asc{% endif %}">
+                        Status
+                        {% if current_sort == 'status' %}
+                            {% if current_direction == 'asc' %}
+                                ▲
+                            {% else %}
+                                ▼
+                            {% endif %}
+                        {% endif %}
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.restaurant.name }}</td>
+                <td>{{ reservation.reservation_time|date:"D, d M Y H:i" }}</td>
+                <td>{{ reservation.number_of_people }}</td>
+                <td><span class="badge bg-secondary text-capitalize">{{ reservation.status }}</span></td>
+                <td>
+                    <a href="{% url 'reservation_detail' reservation.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center mt-5">
+    <p class="text-muted">You have no reservations yet.</p>
+    <a href="{% url 'reservation_create' %}" class="btn btn-primary mt-3">Make a Reservation</a>
+</div>
+{% endif %}
+{% endblock %}

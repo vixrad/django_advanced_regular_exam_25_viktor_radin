@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from .validators import validate_1920x1080_image
+
 
 class Restaurant(models.Model):
     owner = models.ForeignKey(
@@ -7,22 +9,20 @@ class Restaurant(models.Model):
         on_delete=models.CASCADE,
         related_name='restaurants'
     )
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False)
     description = models.TextField(blank=True)
-    address = models.CharField(max_length=255)
-    phone = models.CharField(max_length=20)
-    latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, blank=True, null=True,
-        help_text="Latitude for Google Maps"
+    city = models.CharField(max_length=100, blank=False)
+    postal_code = models.CharField(max_length=20, blank=False)
+    street_name = models.CharField(max_length=255, blank=False)
+    street_number = models.CharField(max_length=10, blank=False)
+    phone = models.CharField(max_length=20, blank=False)
+    image = models.ImageField(
+        upload_to='restaurants/',
+        blank=True,
+        null=True,
+        validators=[validate_1920x1080_image],
+        help_text="Main restaurant image (16:9 PNG or JPG)"
     )
-    longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, blank=True, null=True,
-        help_text="Longitude for Google Maps"
-    )
-    offers_delivery = models.BooleanField(default=False)
-    delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
-    free_delivery = models.BooleanField(default=False)
-    max_delivery_time_minutes = models.PositiveIntegerField(default=45)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -48,25 +48,14 @@ class OpeningHour(models.Model):
         related_name='opening_hours'
     )
     day_of_week = models.IntegerField(choices=DAYS_OF_WEEK)
-    open_time = models.TimeField()
-    close_time = models.TimeField()
+    open_time = models.TimeField(blank=True, null=True)
+    close_time = models.TimeField(blank=True, null=True)
+    is_closed = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('restaurant', 'day_of_week')
         ordering = ['day_of_week']
 
     def __str__(self):
-        return f"{self.restaurant.name} - {self.get_day_of_week_display()}: {self.open_time} - {self.close_time}"
-
-
-class RestaurantImage(models.Model):
-    restaurant = models.ForeignKey(
-        Restaurant,
-        on_delete=models.CASCADE,
-        related_name='images'
-    )
-    image = models.ImageField(upload_to='restaurant_images/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Image for {self.restaurant.name}"
+        status = "Closed" if self.is_closed else f"{self.open_time} - {self.close_time}"
+        return f"{self.restaurant.name} - {self.get_day_of_week_display()}: {status}"

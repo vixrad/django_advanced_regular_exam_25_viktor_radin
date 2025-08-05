@@ -3,99 +3,90 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero section -->
 <section class="text-center text-lg-start py-5 hero-section">
     <div class="container d-flex flex-column flex-lg-row align-items-center justify-content-between">
         <div class="col-lg-6 mb-4 mb-lg-0">
-            <h1 class="display-4 fw-bold mb-3">Connecting Diners and Restaurants in One Place</h1>
+            <h1 class="display-4 fw-bold mb-3">Discover trusted restaurants across London</h1>
             <p class="lead mb-4">
-                VIKODINE matches food lovers with restaurants that suit their taste, location, and style –
-                while helping restaurant owners attract and manage more customers effortlessly.
+                VIKODINE helps Londoners explore authentic, verified restaurants.
+                Browse menus, read genuine reviews, and book your table in seconds –
+                while helping local restaurants reach more guests and grow with ease.
             </p>
-            {% if user.is_authenticated %}
-                <p class="lead">Welcome back, {{ user.username }}!</p>
-                <a href="{% url 'order_list' %}" class="btn btn-success btn-lg me-2">View My Orders</a>
-                <form action="{% url 'logout' %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-danger btn-lg">Sign Out</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2">Sign In</a>
-                <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-lg">Get Started</a>
-            {% endif %}
+            <a href="{% url 'restaurant_list' %}" class="btn btn-primary btn-lg">Explore restaurants in London</a>
         </div>
         <div class="col-lg-5 text-center text-lg-end">
-            <img src="{% static 'images/hero-image.jpg' %}" alt="Dining" class="img-fluid rounded shadow-sm">
+            <img src="{% static 'images/hero-image.jpg' %}" alt="Dining experience in London" class="img-fluid rounded shadow-sm">
         </div>
     </div>
 </section>
 
-<!-- How It Works Section -->
+<!-- Why choose section -->
 <section class="py-5 bg-white border-bottom">
     <div class="container text-center">
-        <h2 class="mb-4 fw-bold">How VIKODINE Works for Everyone</h2>
+        <h2 class="mb-4 fw-bold">Why choose VIKODINE in London?</h2>
         <p class="text-muted mb-5 fs-5">
-            We bring together people looking for their next meal with restaurants ready to serve them.
-            Our platform ensures a perfect match – so diners enjoy the right experience, and restaurants grow faster.
+            We make it easy for Londoners to enjoy the city’s food culture and for restaurants to grow their local audience.
+            Every listed restaurant is authentic and verified – so you can book with confidence.
         </p>
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="p-4 border rounded h-100 shadow-sm hover-card">
-                    <h4 class="fw-bold mb-3">For Food Lovers</h4>
+                    <h4 class="fw-bold mb-3">For food lovers</h4>
                     <p class="text-muted">
-                        Find restaurants that match your mood, budget, or location.
-                        Browse menus in real time, read trusted reviews, and book your table instantly.
-                        Enjoy dining that feels personal, quick, and hassle-free.
+                        Quickly find trusted local favourites and hidden gems across London.
+                        Browse real-time menus, check reviews, and secure your table instantly –
+                        no guesswork, no hassle.
                     </p>
-                    <a href="{% url 'restaurant_list' %}" class="btn btn-outline-primary me-2">Find My Match</a>
+                    <a href="{% url 'restaurant_list' %}" class="btn btn-outline-primary">Browse London restaurants</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="p-4 border rounded h-100 shadow-sm hover-card">
-                    <h4 class="fw-bold mb-3">For Restaurant Owners</h4>
+                    <h4 class="fw-bold mb-3">For restaurant owners</h4>
                     <p class="text-muted">
-                        List your restaurant for free, showcase your menu, and appear in searches from customers who are
-                        actively looking to book. Manage bookings, get insights, and fill tables more efficiently.
+                        Get your London restaurant listed where people are actively looking to book.
+                        Showcase your food, manage bookings effortlessly, and gain insights that help you grow.
                     </p>
-                    <a href="/about-us/" class="btn btn-outline-success me-2">Start Growing</a>
+                    <a href="/about-us/" class="btn btn-outline-primary">List my restaurant</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
+<!-- Features section -->
 <section class="py-5 bg-light">
     <div class="container text-center">
-        <h2 class="mb-5 fw-bold">Why Use VIKODINE?</h2>
+        <h2 class="mb-5 fw-bold">Everything you need in one place</h2>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="p-4 border rounded h-100 shadow-sm hover-card">
-                    <img src="{% static 'images/feature1.jpg' %}" alt="Match" class="img-fluid rounded mb-3">
-                    <h4 class="fw-bold mb-3">Smart Matching</h4>
+                    <img src="{% static 'images/feature1.jpg' %}" alt="Tailored match" class="img-fluid rounded mb-3">
+                    <h4 class="fw-bold mb-3">Tailored recommendations</h4>
                     <p class="text-muted">
-                        Diners get restaurant recommendations tailored to their preferences,
-                        while restaurants are matched with customers who want exactly what they offer.
+                        Personalised suggestions based on your mood, budget, and location –
+                        helping you experience the best London has to offer.
                     </p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-4 border rounded h-100 shadow-sm hover-card">
-                    <img src="{% static 'images/feature2.jpg' %}" alt="Menu" class="img-fluid rounded mb-3">
-                    <h4 class="fw-bold mb-3">Live Menus & Instant Booking</h4>
+                    <img src="{% static 'images/feature2.jpg' %}" alt="Menu booking" class="img-fluid rounded mb-3">
+                    <h4 class="fw-bold mb-3">Real-time menus & bookings</h4>
                     <p class="text-muted">
-                        See real-time menus and secure your table instantly. Restaurants can update
-                        availability on the fly to fill tables effortlessly.
+                        View up-to-date menus and book your table in seconds.
+                        Restaurants update availability live, saving you time and effort.
                     </p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-4 border rounded h-100 shadow-sm hover-card">
-                    <img src="{% static 'images/feature3.jpg' %}" alt="Insights" class="img-fluid rounded mb-3">
-                    <h4 class="fw-bold mb-3">Insights & Growth</h4>
+                    <img src="{% static 'images/feature3.jpg' %}" alt="Analytics growth" class="img-fluid rounded mb-3">
+                    <h4 class="fw-bold mb-3">Insights for growth</h4>
                     <p class="text-muted">
-                        Restaurant owners get insights into customer preferences and booking trends,
-                        helping them attract and retain more customers.
+                        For London restaurant owners, powerful analytics show what guests want,
+                        helping you improve service, attract repeat customers, and boost revenue.
                     </p>
                 </div>
             </div>
@@ -103,18 +94,16 @@
     </div>
 </section>
 
-<!-- Call to Action -->
+<!-- Call to action -->
 <section class="cta-section text-white text-center py-5">
     <div class="container">
-        <h2 class="mb-3 fw-bold">Join the VIKODINE Community Today</h2>
+        <h2 class="mb-3 fw-bold">Be part of VIKODINE today</h2>
         <p class="mb-4 fs-5">
-            Whether you want to discover your next dining experience or grow your restaurant,
-            VIKODINE connects you to the right people at the right time.
+            Whether you want to discover your next dining experience in London or grow your restaurant’s reach,
+            VIKODINE makes it simple to connect with the right people.
         </p>
-        {% if not user.is_authenticated %}
-            <a href="{% url 'register' %}" class="btn btn-light btn-lg me-2">Get Started Now</a>
-        {% endif %}
-        <a href="/about-us/" class="btn btn-outline-light btn-lg">Learn More</a>
+        <a href="{% url 'restaurant_list' %}" class="btn btn-light btn-lg me-2">Explore restaurants</a>
+        <a href="/about-us/" class="btn btn-outline-light btn-lg">List my restaurant</a>
     </div>
 </section>
 {% endblock %}

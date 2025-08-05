@@ -39,6 +39,9 @@ PROJECT_APPS = [
     'reservations.apps.ReservationsConfig',
     'menu.apps.MenuConfig',
     'widget_tweaks',
+    "crispy_forms",
+    "crispy_bootstrap5",
+    'rest_framework',
 ]
 
 INSTALLED_APPS = [
@@ -149,9 +152,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-COMPANIES_HOUSE_API_KEY = config('COMPANIES_HOUSE_API_KEY', default = 'your-dev-key-here')
+COMPANIES_HOUSE_API_KEY = config('COMPANIES_HOUSE_API_KEY')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@example.com"

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}New Reservation{% endblock %}
+{% block content %}
+<div class="container py-4" style="max-width: 600px;">
+    <h2 class="mb-3 fw-bold text-center">Book a Table</h2>
+    <p class="text-muted text-center small mb-4">
+        Select a date and time based on the restaurant's opening hours.
+    </p>
+    <form method="post" id="reservation-form" class="border rounded p-3 shadow-sm bg-white">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.restaurant|as_crispy_field }}
+        </div>
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                {{ form.reservation_date|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {{ form.reservation_time|as_crispy_field }}
+            </div>
+        </div>
+        <div class="mb-3">
+            {{ form.number_of_people|as_crispy_field }}
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'my_reservations' %}" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-success">Reserve</button>
+        </div>
+    </form>
+</div>
+
+<!-- Include custom JS -->
+<script src="{% static 'js/reservation.js' %}"></script>
+{% endblock %}

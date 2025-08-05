@@ -5,6 +5,7 @@ from .models import MenuCategory, MenuItem
 class MenuCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'restaurant')
     search_fields = ('name', 'restaurant__name')
+    list_filter = ('restaurant',)
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):

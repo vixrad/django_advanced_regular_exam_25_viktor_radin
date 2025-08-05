@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 fw-bold">Add a New Restaurant</h2>
+    <p class="text-muted mb-4">
+        Fill in the details below to create your restaurant profile.
+        You can always edit these details later.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <!-- basic restaurant info -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">Basic Information</div>
+            <div class="card-body">
+                {% for field in form.visible_fields %}
+                    {% if field.name != "image" %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                            </label>
+                            {% render_field field class="form-control" placeholder=field.label %}
+                            {{ field.errors }}
+                            {% if field.help_text %}
+                                <small class="text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Image field separately -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        {{ form.image.label }} <small class="text-muted">(Optional)</small>
+                    </label>
+                    {% render_field form.image class="form-control" %}
+                    {{ form.image.errors }}
+                    {% if form.image.help_text %}
+                        <small class="text-muted">{{ form.image.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- opening hours -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">
+                Opening Hours <span class="text-danger">*</span>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">
+                    All days must have hours filled or be marked as closed.
+                </p>
+                {{ formset_hours.management_form }}
+                <div class="table-responsive">
+                    <table class="table align-middle table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Day</th>
+                                <th>Open Time <span class="text-danger">*</span></th>
+                                <th>Close Time <span class="text-danger">*</span></th>
+                                <th class="text-center">Closed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for form in formset_hours %}
+                                <tr>
+                                    <td>
+                                        {% if forloop.counter0 == 0 %}Monday{% endif %}
+                                        {% if forloop.counter0 == 1 %}Tuesday{% endif %}
+                                        {% if forloop.counter0 == 2 %}Wednesday{% endif %}
+                                        {% if forloop.counter0 == 3 %}Thursday{% endif %}
+                                        {% if forloop.counter0 == 4 %}Friday{% endif %}
+                                        {% if forloop.counter0 == 5 %}Saturday{% endif %}
+                                        {% if forloop.counter0 == 6 %}Sunday{% endif %}
+                                        {{ form.day_of_week.as_hidden }}
+                                    </td>
+                                    <td>
+                                        {% render_field form.open_time class="form-control" required="required" %}
+                                        {{ form.open_time.errors }}
+                                    </td>
+                                    <td>
+                                        {% render_field form.close_time class="form-control" required="required" %}
+                                        {{ form.close_time.errors }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ form.is_closed }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <small class="text-muted">
+                    Use the “Closed” checkbox for days your restaurant is not operating.
+                </small>
+            </div>
+        </div>
+
+        <!-- actions -->
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary btn-lg px-4">Add Restaurant</button>
+            <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-lg px-4">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
