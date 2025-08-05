@@ -12,6 +12,7 @@
                     <th>Date & Time</th>
                     <th>People</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +23,23 @@
                     <td>{{ reservation.reservation_time|date:"D, d M Y H:i" }}</td>
                     <td>{{ reservation.number_of_people }}</td>
                     <td>{{ reservation.get_status_display }}</td>
+                    <td>
+                        {% if reservation.status == 'pending' %}
+                            <form method="post" action="{% url 'owner_confirm_reservation' reservation.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                            </form>
+                            <form method="post" action="{% url 'owner_cancel_reservation' reservation.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                            </form>
+                        {% elif reservation.status == 'confirmed' %}
+                            <form method="post" action="{% url 'owner_cancel_reservation' reservation.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                            </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

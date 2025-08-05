@@ -147,7 +147,7 @@ def available_timeslots(request, restaurant_id):
     result = [{"value": t.strftime("%H:%M"), "label": t.strftime("%I:%M %p")} for t in slots]
     return JsonResponse(result, safe=False)
 
-# cancel reservation
+# cancel reservation (customer)
 @login_required
 @require_POST
 def cancel_reservation(request, pk):
@@ -167,3 +167,30 @@ def cancel_reservation(request, pk):
         except DatabaseError:
             messages.error(request, "could not update reservation status.")
     return redirect('reservation_detail', pk=pk)
+
+# owner actions
+@login_required
+@user_passes_test(is_owner_or_superuser)
+@require_POST
+def owner_confirm_reservation(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk, restaurant__owner=request.user)
+    if reservation.status == Reservation.STATUS_PENDING:
+        reservation.status = Reservation.STATUS_CONFIRMED
+        reservation.save()
+        messages.success(request, "Reservation confirmed successfully.")
+    else:
+        messages.warning(request, "Only pending reservations can be confirmed.")
+    return redirect('owner_reservations')
+
+@login_required
+@user_passes_test(is_owner_or_superuser)
+@require_POST
+def owner_cancel_reservation(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk, restaurant__owner=request.user)
+    if reservation.status in [Reservation.STATUS_PENDING, Reservation.STATUS_CONFIRMED]:
+        reservation.status = Reservation.STATUS_CANCELLED
+        reservation.save()
+        messages.success(request, "Reservation cancelled successfully.")
+    else:
+        messages.warning(request, "This reservation cannot be cancelled.")
+    return redirect('owner_reservations')

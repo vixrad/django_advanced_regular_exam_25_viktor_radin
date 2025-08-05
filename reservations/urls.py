@@ -10,4 +10,6 @@ urlpatterns = [
     path('<int:pk>/review/', views.leave_review, name='leave_review'),
     path('api/restaurants/<int:restaurant_id>/timeslots/', views.available_timeslots, name='available_timeslots'),
     path('cancel/<int:pk>/', views.cancel_reservation, name='cancel_reservation'),
+    path('owner/confirm/<int:pk>/', views.owner_confirm_reservation, name='owner_confirm_reservation'),
+    path('owner/cancel/<int:pk>/', views.owner_cancel_reservation, name='owner_cancel_reservation'),
 ]
