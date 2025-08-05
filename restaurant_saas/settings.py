@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from decouple import config
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +29,7 @@ DEBUG = config('DEBUG', default = False, cast = bool)
 
 ALLOWED_HOSTS = ['.onrender.com', 'localhost']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Application definition
@@ -88,27 +90,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'restaurant_saas.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+DATABASE_URL = config('DATABASE_URL', default=None)
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-USE_POSTGRES = config('USE_POSTGRES', default = False, cast = bool)
-
-if USE_POSTGRES:
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=False)
+    }
+elif config('USE_POSTGRES', default=False, cast=bool):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default = 'restaurant_saas_db'),
-            'USER': config('DB_USER', default = 'saas_user'),
-            'PASSWORD': config('DB_PASSWORD', default = 'saas_password'),
-            'HOST': config('DB_HOST', default = 'localhost'),
-            'PORT': config('DB_PORT', default = 5432, cast = int),
+            'NAME': config('DB_NAME', default='restaurant_saas_db'),
+            'USER': config('DB_USER', default='saas_user'),
+            'PASSWORD': config('DB_PASSWORD', default='saas_password'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default=5432, cast=int),
         }
     }
 else:
